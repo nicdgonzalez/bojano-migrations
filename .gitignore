@@ -8,3 +8,8 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Secrets
+.env
+service-account-key.json
+data/*

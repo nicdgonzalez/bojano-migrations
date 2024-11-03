@@ -23,7 +23,7 @@ CLERK_SECRET_KEY=
 MONGODB_URL=
 ```
 
-Create a [Google Service Account key] and save it to `service-account.json`.
+Create a [Google Service Account key] and save it as `service-account-key.json`.
 
 Then, install the project's dependencies:
 

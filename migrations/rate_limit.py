@@ -45,7 +45,7 @@ def get_sleep_duration_between_requests(
     upper_limit = rate_limit.duration_sec / rate_limit.requests_max
 
     if requests_total <= rate_limit.requests_max:
-        value = 0
+        value = 0.0
     else:
         value = (requests_total / rate_limit.requests_max) * upper_limit
         value += random.randint(0, 100) / 100.0

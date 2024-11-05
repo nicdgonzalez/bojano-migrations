@@ -2,11 +2,12 @@ import csv
 import logging
 import pathlib
 import time
-from typing import TypedDict
+from typing import TypedDict, cast
 
 import requests
 
 from .constants import CLERK_SECRET_KEY, DATA
+from .errors import ClerkError
 
 _log = logging.getLogger(__name__)
 
@@ -56,7 +57,7 @@ def get_user_raw_from_csv(filepath: pathlib.Path) -> list[UserDataRaw]:
     """
     with open(filepath, "r") as f:
         reader = csv.DictReader(f)
-        data = list(reader)
+        data = cast(list[UserDataRaw], list(reader))
 
     return data
 
@@ -134,13 +135,21 @@ def insert_users_into_clerk(
 ) -> None:
     """Insert a batch of users into the Clerk database."""
     for user_payload in users:
+        # Extracting the name for a better log message.
+        name = f"{user_payload["first_name"]} {user_payload["last_name"]}"
+        name = name.strip()  # In case last_name is an empty string
+
         try:
             url = "https://api.clerk.com/v1/users"
             headers = {"Authorization": f"Bearer {CLERK_SECRET_KEY}"}
             response = requests.post(url, json=user_payload, headers=headers)
+
+            if not (200 <= response.status_code < 300):
+                raise ClerkError(response.json())
+
         except Exception as exc:
-            _log.error(f"failed to add new user to Clerk: {exc}")
+            _log.error(f"failed to add {name!r} to Clerk: {exc}")
         else:
-            _log.info(f"added a new user to Clerk: {response.json()}")
+            _log.info(f"added {name!r} to Clerk: {response.json()}")
         finally:
             time.sleep(sleep_duration_sec)

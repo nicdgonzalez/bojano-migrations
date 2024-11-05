@@ -24,7 +24,7 @@ MONGODB_URL=
 ```
 
 Create a [Google Service Account key] and save it as `service-account-key.json`.
-Make sure this new user has access to the necessary spreadsheets!
+**Make sure this new user has access to the necessary spreadsheets!**
 
 Then, install the project's dependencies:
 

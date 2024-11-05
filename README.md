@@ -23,22 +23,25 @@ CLERK_SECRET_KEY=
 MONGODB_URL=
 ```
 
-Create a [Google Service Account key] and save it to `service-account.json`.
+Create a [Google Service Account key] and save it as `service-account-key.json`.
+Make sure this new user has access to the necessary spreadsheets!
 
 Then, install the project's dependencies:
 
-> [!TIP]
+> [!NOTE]
 > If you don't already have [uv] installed, you can do so by running
 > `python -m pip install uv`.
 
 ```bash
+uv venv
+source .venv/bin/activate
 uv sync
 ```
 
-Finally, run the project:
+Finally, run the program:
 
 ```bash
-uv run migrations
+python -m migrations
 ```
 
 
